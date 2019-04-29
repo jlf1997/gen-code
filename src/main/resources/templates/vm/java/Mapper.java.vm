@@ -1,0 +1,83 @@
+package ${package}.dao;
+
+import ${package}.domain.${className};
+import java.util.List;	
+import ${package}.util.domain.PageData;
+import ${package}.util.domain.Assist;
+import org.apache.ibatis.annotations.Param;
+
+/**
+ * ${tableComment} 数据层
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${className}Mapper 
+{
+	
+	
+	
+	/**
+     * 新增${tableComment}
+     * 
+     * @param ${classname} ${tableComment}信息
+     * @return 结果
+     */
+	public int insert${className}(${className} ${classname});
+	
+	
+	
+	/**
+	 * 获得Obj数据的总行数,可以通过辅助工具Assist进行条件查询,如果没有条件则传入null
+	 * @param assist
+	 * @return
+	 */
+    public long getObjRowCountCommon(Assist assist);
+    
+    
+	/**
+	 * 获得Obj数据集合,可以通过辅助工具Assist进行条件查询,如果没有条件则传入null
+	 * @param assist
+	 * @return
+	 */
+    public List<${className}> selectListCommon(Assist assist);
+    
+     /**
+	 * 条件更新
+	 * @param assist
+	 * @return
+	 */
+    public int updateObjCommon(@Param("value") ${className} value,@Param("assist") Assist assist);
+    
+    /**
+    * 条件删除
+    * @param assist
+    */
+    public int deleteObjCommon(Assist assist);
+    
+#if($pkNum==1)
+	/**
+     * 删除${tableComment}
+     * 
+     * @param ${primaryKey.attrname} ${tableComment}ID
+     * @return 结果
+     */
+	public int delete${className}ById(${primaryKey.attrType} ${primaryKey.attrname});
+	 
+	/**
+     * 批量删除${tableComment}
+     * 
+     * @param ${primaryKey.attrname}s 需要删除的数据ID
+     * @return 结果
+     */
+	public int delete${className}ByIds(String[] ${primaryKey.attrname}s);
+	/**
+     * 查询${tableComment}信息
+     * 
+     * @param ${primaryKey.attrname} ${tableComment}ID
+     * @return ${tableComment}信息
+     */
+	public ${className} select${className}ById(${primaryKey.attrType} ${primaryKey.attrname});
+#end
+	
+}

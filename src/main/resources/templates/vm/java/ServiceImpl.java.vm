@@ -1,0 +1,112 @@
+package ${package}.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ${package}.dao.${className}Mapper;
+import ${package}.domain.${className};
+import ${package}.service.I${className}Service;
+import org.springframework.util.Assert;
+import ${package}.util.domain.PageData;
+import ${package}.util.domain.Assist;
+
+
+/**
+ * ${tableComment} 服务层实现
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${className}ServiceImpl implements I${className}Service 
+{
+	@Autowired
+	private ${className}Mapper ${classname}Mapper;
+
+	
+	
+	@Override
+	public int insert${className}(${className} ${classname})
+	{
+	    return ${classname}Mapper.insert${className}(${classname});
+	}
+
+	
+	@Override
+    public PageData<${className}> selectPageCommon(Assist assist, int page, int limit) {
+        if (null == assist) {
+    		assist = new Assist();
+    	}
+    	Assert.isTrue(page>0,"page is from 1");
+		PageData<${className}> pageData = new PageData<>();
+		Long count = this.getObjRowCountCommon(assist);
+		int startRow = limit * (page - 1);
+		assist.setStartRow(startRow);
+		assist.setRowSize(limit);
+		List<${className}> list = ${classname}Mapper.selectListCommon(assist);
+		pageData.setCount(count.intValue());
+		pageData.setList(list);
+		return pageData;
+    }
+    
+    
+    @Override
+	public List<${className}> selectListCommon(Assist assist) {
+		if (null == assist) {
+    		assist = new Assist();
+    	}
+		return ${classname}Mapper.selectListCommon(assist);
+	}
+	
+	@Override
+	public long getObjRowCountCommon(Assist assist) {
+		if (null == assist) {
+    		assist = new Assist();
+    	}
+		return ${classname}Mapper.getObjRowCountCommon(assist);
+	}
+	
+	@Override
+    public int updateObjCommon(${className} value, Assist assist) {
+        int code = ${classname}Mapper.updateObjCommon(value, assist);
+        return code;
+    }
+    
+     /**
+	 * 条件删除
+	 * @param assist
+	 * @return
+	 */
+     public int deleteObjCommon(Assist assist){
+     	return ${classname}Mapper.deleteObjCommon(assist);
+     }
+    
+    
+#if($pkNum==1)
+	/**
+     * 删除${tableComment}对象
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+	@Override
+	public int delete${className}ByIds(String ids)
+	{
+		Assert.notNull(ids, "ids is not null");
+		return ${classname}Mapper.delete${className}ByIds(ids.split(","));
+	}
+	/**
+     * 查询${tableComment}信息
+     * 
+     * @param ${primaryKey.attrname} ${tableComment}ID
+     * @return ${tableComment}信息
+     */
+    @Override
+	public ${className} select${className}ById(${primaryKey.attrType} ${primaryKey.attrname})
+	{
+	    return ${classname}Mapper.select${className}ById(${primaryKey.attrname});
+	}
+#end	
+
+	
+}

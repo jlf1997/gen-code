@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package}.dao.${className}Mapper">
+    
+    <resultMap type="${package}.domain.${className}" id="${className}Result">
+#foreach ($column in $columns)
+        <result property="${column.attrname}"    column="${column.columnName}"    />
+#end
+    </resultMap>
+    
+    <!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} 
+                <if test="req.value != null"> #{req.value}</if> 
+                <if test="req.values != null">
+                    <foreach collection="req.values" item="val" separator=","> 
+                         #{val}
+                    </foreach> 
+                </if> 
+                <if test="req.suffix != null"> ${req.suffix}</if> 
+            </foreach>
+        </where>
+    </sql>
+    
+    
+     <!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} 
+                <if test="req.value != null"> #{req.value}</if> 
+                <if test="req.values != null">
+                    <foreach collection="req.values" item="val" separator=","> 
+                        #{val} 
+                    </foreach> 
+                </if> 
+                <if test="req.suffix != null"> ${req.suffix}</if> 
+            </foreach>
+        </where>
+    </sql>
+    
+    <sql id="select${className}Vo">
+        select#foreach($column in $columns) $column.columnName#if($velocityCount != $columns.size()),#end#end from ${tableName}
+    </sql>
+    
+    
+     <!-- 通用列表查询-->
+    <select id="selectListCommon" parameterType="${package}.util.domain.Assist" resultMap="${className}Result">
+        <include refid="select${className}Vo" /> 
+        <if test="require!=null"><include refid="Assist" /></if>
+        <if test="order !=null">
+        	 ${order}
+        </if>
+        <if test="startRow !=null and rowSize !=null">
+            LIMIT  #{startRow},#{rowSize}
+        </if>
+    </select>
+    
+    <!-- 条件删除-->
+    <delete id="deleteObjCommon" parameterType="${package}.util.domain.Assist" >
+        delete from ${tableName}
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+    
+    
+    <!--获得类名为:对应的数据库表的数据总行数 -->
+    <select id="getObjRowCountCommon" parameterType="${package}.util.domain.Assist" resultType="java.lang.Long">
+        select count(*)  from ${tableName}
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    
+    
+   
+    <!--条件更新 -->
+    <update id="updateObjCommon" parameterType="map">
+        update ${tableName}
+        <trim prefix="SET" suffixOverrides=",">
+#foreach($column in $columns)
+#if($column.columnKey != 'PRI')
+            <if test="value.$column.attrname != null #if($column.attrType == 'String' ) and value.$column.attrname != '' #end ">$column.columnName = #{value.$column.attrname},</if>
+#end
+#end
+        </trim>
+        <if test="assist!=null and assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+   
+
+
+      <!--新增 -->  
+    <insert id="insert${className}" parameterType="${package}.domain.${className}"#if($primaryKey.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$primaryKey.attrname"#end>
+        insert into ${tableName}
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+#foreach($column in $columns)
+#if($column.columnKey != 'PRI' || $primaryKey.extra != 'auto_increment')
+			<if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname != '' #end ">$column.columnName,</if>
+#end
+#end
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+#foreach($column in $columns)
+#if($column.columnKey != 'PRI' || $primaryKey.extra != 'auto_increment')
+			<if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname != '' #end ">#{$column.attrname},</if>
+#end			
+#end
+         </trim>
+    </insert>
+	 
+
+    
+    
+#if($pkNum==1) 
+	<!-- 根据id查询-->
+	 <select id="select${className}ById" parameterType="${primaryKey.attrType}" resultMap="${className}Result">
+        <include refid="select${className}Vo"/>
+        where ${primaryKey.columnName} = #{${primaryKey.attrname}}
+    </select>
+    
+	<!-- 根据id批量删除-->
+    <delete id="delete${className}ByIds" parameterType="String">
+        delete from ${tableName} where ${primaryKey.columnName} in 
+        <foreach item="${primaryKey.attrname}" collection="array" open="(" separator="," close=")">
+            #{${primaryKey.attrname}}
+        </foreach>
+    </delete>
+#end    
+    
+
+    
+</mapper>
