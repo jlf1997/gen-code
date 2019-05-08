@@ -38,4 +38,11 @@ public interface GenMapper
      * @return 列信息
      */
     public List<ColumnInfo> selectTableColumnsByName(String tableName);
+
+    /**
+     * 查询库中所有表
+     * @param dataBaseName
+     * @return
+     */
+	public List<String> getAllTables(String dataBaseName);
 }

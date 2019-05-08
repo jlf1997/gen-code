@@ -1,6 +1,9 @@
 package com.cecii.api.lanecur.service;
 
 import java.util.List;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.velocity.VelocityContext;
 
 import com.cecii.api.lanecur.domain.TableInfo;
 
@@ -34,4 +37,14 @@ public interface IGenService
      * @return 数据
      */
     public byte[] generatorCode(String[] tableNames,String dataBaseName);
+    
+    /**
+     * 生成特定模板
+     * @param template
+     * @param velocityContext
+     * @param zip
+     */
+    public String generatorCode(String template, VelocityContext velocityContext);
+    
+    public List<String> getAllTables(String dataBaseName);
 }

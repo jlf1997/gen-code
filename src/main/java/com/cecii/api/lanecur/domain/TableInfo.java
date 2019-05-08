@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.cecii.base.BaseEntity;
+import com.cecii.config.GenConfig;
 import com.cecii.util.StringUtils;
 /**
  * 
@@ -111,7 +112,7 @@ public class TableInfo extends BaseEntity
 
     public String getClassName()
     {
-        return className;
+        return className+GenConfig.classPrefix;
     }
 
     public void setClassName(String className)
@@ -121,7 +122,7 @@ public class TableInfo extends BaseEntity
 
     public String getClassname()
     {
-        return classname;
+        return classname+GenConfig.classPrefix;
     }
 
     public void setClassname(String classname)

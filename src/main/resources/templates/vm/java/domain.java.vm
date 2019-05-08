@@ -1,11 +1,13 @@
 package ${package}.domain;
 
 
-
 #foreach ($column in $columns)
 #if($column.attrType == 'Date')
 import java.util.Date;
-#break
+import com.fasterxml.jackson.annotation.JsonFormat;
+#end
+#if($column.attrType == 'BigDecimal')
+import java.math.BigDecimal;
 #end
 #end
 
@@ -21,6 +23,9 @@ public class ${className}
 	
 #foreach ($column in $columns)
 	/** $column.columnComment */
+#if($column.attrType == 'Date')
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+#end
 	private $column.attrType $column.attrname;
 #end
 

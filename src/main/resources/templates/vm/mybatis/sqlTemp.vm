@@ -1,0 +1,19 @@
+//service
+public List<Map<String,Object>> ${functionName}(Map<String, Object> map);
+
+//seviceImp
+public List<Map<String,Object>> ${functionName}(Map<String, Object> map){
+	return dao.${functionName}(map);
+
+}
+
+//dao
+public List<Map<String,Object>> ${functionName}(Map<String, Object> map);
+
+//xml
+<!--获得类名为:对应的数据库表的数据总行数 -->
+    <select id="${functionName}" parameterType="map" resultType="java.util.Map">
+        ${sql}
+    </select>
+
+

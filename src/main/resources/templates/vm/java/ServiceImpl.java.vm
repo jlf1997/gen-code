@@ -10,6 +10,9 @@ import org.springframework.util.Assert;
 import ${package}.util.domain.PageData;
 import ${package}.util.domain.Assist;
 
+#if($primaryKey.attrType == 'BigDecimal')
+import java.math.BigDecimal;
+#end
 
 /**
  * ${tableComment} 服务层实现

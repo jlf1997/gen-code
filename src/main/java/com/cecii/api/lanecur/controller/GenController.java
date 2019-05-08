@@ -1,9 +1,11 @@
 package com.cecii.api.lanecur.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,13 +74,38 @@ public class GenController extends BaseController
     		, @PathVariable("dataBaseName") String dataBaseName
     		) throws IOException
     {
-        String[] tableNames = Convert.toStrArray(tables);
+    	String[] tableNames;
+    	if(tables==null) {//获取所有表
+    		List<String> strs = genService.getAllTables(dataBaseName);
+    		tableNames = new String[strs.size()];
+    		tableNames = strs.toArray(tableNames);
+    	}else {
+    		tableNames = Convert.toStrArray(tables);
+    	}
+        
         byte[] data = genService.generatorCode(tableNames,dataBaseName);
         response.reset();
         response.setHeader("Content-Disposition", "attachment; filename=\"code.zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
 
+        IOUtils.write(data, response.getOutputStream());
+    }
+    
+    @GetMapping("/genSqlFunction")
+    @ResponseBody
+    public void genSqlFunction(HttpServletResponse response,
+    		String functionName,
+    		String sql
+    		) throws IOException{
+   	 	VelocityContext velocityContext = new VelocityContext();
+   	 	velocityContext.put("functionName", functionName);
+   	 	velocityContext.put("sql", sql);
+        byte[] data = genService.generatorCode("templates/vm/mybatis/sqlTemp.vm",velocityContext).getBytes();
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=\""+functionName+".txt\"");
+        response.addHeader("Content-Length", "" + data.length);
+        response.setContentType("application/octet-stream; charset=UTF-8");
         IOUtils.write(data, response.getOutputStream());
     }
 }

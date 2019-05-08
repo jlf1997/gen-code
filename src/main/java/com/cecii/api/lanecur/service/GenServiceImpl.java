@@ -143,4 +143,23 @@ public class GenServiceImpl implements IGenService
             }
         }
     }
+    
+    
+    @Override
+    public String generatorCode(String template, VelocityContext velocityContext) {
+    	VelocityInitializer.initVelocity();
+        StringWriter sw = new StringWriter();
+        Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+        tpl.merge(velocityContext, sw);
+        return sw.getBuffer().toString();
+    }
+
+	@Override
+	public List<String> getAllTables(String dataBaseName) {
+		// TODO Auto-generated method stub
+		return genMapper.getAllTables(dataBaseName);
+	}
+    
+  
+  
 }

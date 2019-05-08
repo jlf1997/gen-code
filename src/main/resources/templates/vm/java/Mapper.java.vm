@@ -5,6 +5,10 @@ import java.util.List;
 import ${package}.util.domain.PageData;
 import ${package}.util.domain.Assist;
 import org.apache.ibatis.annotations.Param;
+#if($primaryKey.attrType == 'BigDecimal')
+import java.math.BigDecimal;
+#end
+
 
 /**
  * ${tableComment} 数据层
