@@ -109,7 +109,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 	 
-
+	<select id="getAllListByMapCondition" parameterType="map" resultType="java.util.Map">
+        select * from ${tableName} 
+        <where>  
+#foreach($column in $columns)
+            <if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname.trim() != '' #end"> and $column.columnName = #{$column.attrname}</if>
+ #end
+        </where>
+        <if test="pageOptionStartRow !=null and pageOptionShowCount !=null">
+        LIMIT  #{pageOptionStartRow},#{pageOptionShowCount}
+        </if>
+    </select>
+    
+     <select id="getAllCountByMapCondition" parameterType="map" resultType="java.lang.Integer">
+        select count(1) from ${tableName}
+        <where>  
+#foreach($column in $columns)
+            <if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname.trim() != '' #end"> and $column.columnName = #{$column.attrname}</if>
+ #end
+        </where>
+    </select>
     
     
 #if($pkNum==1) 

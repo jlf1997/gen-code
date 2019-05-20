@@ -1,6 +1,8 @@
 package ${package}.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ${package}.dao.${className}Mapper;
@@ -9,6 +11,8 @@ import ${package}.service.I${className}Service;
 import org.springframework.util.Assert;
 import ${package}.util.domain.PageData;
 import ${package}.util.domain.Assist;
+
+import com.readboy.ssm.po.PageOption;
 
 #if($primaryKey.attrType == 'BigDecimal')
 import java.math.BigDecimal;
@@ -26,7 +30,7 @@ public class ${className}ServiceImpl implements I${className}Service
 	@Autowired
 	private ${className}Mapper ${classname}Mapper;
 
-	
+
 	
 	@Override
 	public int insert${className}(${className} ${classname})
@@ -80,10 +84,50 @@ public class ${className}ServiceImpl implements I${className}Service
 	 * @param assist
 	 * @return
 	 */
+	 @Override
      public int deleteObjCommon(Assist assist){
      	return ${classname}Mapper.deleteObjCommon(assist);
      }
     
+ 	@Override
+	public int getCountByMapCondition(Map<String, Object> map, String functionName) {
+		if(map==null) {
+			map = new HashMap<>();
+		}
+		return getCountCondition(map,functionName);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getListByMapCondition(Map<String, Object> map, PageOption page,
+			String functionName) {
+		if(map==null) {
+			map = new HashMap<>();
+		}
+		if(page!=null) {
+			map.put("pageOptionStartRow", page.getShowCount()*(page.getCurrentPage()-1));
+			map.put("pageOptionShowCount", page.getShowCount());
+		}
+		return getListCondition(map,functionName);
+	}
+	
+	//此处增加新的方法 对应mybatis查询
+	private List<Map<String, Object>> getListCondition(Map<String, Object> map,String functionName){
+		//查询所有
+		if(I${className}Service.GET_ALL.equals(functionName)) {
+			return ${classname}Mapper.getAllListByMapCondition(map);
+		}
+		return ${classname}Mapper.getAllListByMapCondition(map);
+	}
+	
+	//此处增加新的方法 对应mybatis查询
+	private int getCountCondition(Map<String, Object> map,String functionName){
+		//查询所有
+		if(I${className}Service.GET_ALL.equals(functionName)) {
+			return ${classname}Mapper.getAllCountByMapCondition(map);
+		}
+		return ${classname}Mapper.getAllCountByMapCondition(map);
+	} 
     
 #if($pkNum==1)
 	/**

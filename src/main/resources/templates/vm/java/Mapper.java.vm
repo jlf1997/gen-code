@@ -1,7 +1,8 @@
 package ${package}.dao;
 
 import ${package}.domain.${className};
-import java.util.List;	
+import java.util.List;
+import java.util.Map;	
 import ${package}.util.domain.PageData;
 import ${package}.util.domain.Assist;
 import org.apache.ibatis.annotations.Param;
@@ -58,6 +59,17 @@ public interface ${className}Mapper
     * @param assist
     */
     public int deleteObjCommon(Assist assist);
+    
+    /**
+    * 	默认查询所有
+    */
+    public List<Map<String, Object>> getAllListByMapCondition(Map<String, Object> map);
+
+
+	/**
+	*  默认查询所有记录数
+	*/
+	public int getAllCountByMapCondition(Map<String, Object> map);
     
 #if($pkNum==1)
 	/**

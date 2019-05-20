@@ -2,12 +2,13 @@ package ${package}.service;
 
 import ${package}.domain.${className};
 import java.util.List;
+import java.util.Map;
 import ${package}.util.domain.PageData;
 import ${package}.util.domain.Assist;
 #if($primaryKey.attrType == 'BigDecimal')
 import java.math.BigDecimal;
 #end
-
+import com.readboy.ssm.po.PageOption;
 
 /**
  * ${tableComment} 服务层
@@ -17,6 +18,8 @@ import java.math.BigDecimal;
  */
 public interface I${className}Service 
 {
+
+	public static final String GET_ALL = "getAll";
 	/**
      * 新增${tableComment}
      * 
@@ -60,6 +63,20 @@ public interface I${className}Service
 	 */
      public int deleteObjCommon(Assist assist);
      
+     
+   	 /**
+	    *  通用分页查询获取总数
+	  * @param map
+	  * @return
+	  */
+     public int getCountByMapCondition(Map<String, Object> map,String functionName);
+     
+     /**
+	    *  通用分页查询获取列表
+	  * @param map
+	  * @return
+	  */
+     public List<Map<String,Object>> getListByMapCondition(Map<String, Object> map,PageOption page,String functionName);
      
      
 #if($pkNum==1)
