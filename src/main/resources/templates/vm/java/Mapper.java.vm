@@ -2,9 +2,10 @@ package ${package}.dao;
 
 import ${package}.domain.${className};
 import java.util.List;
-import java.util.Map;	
-import ${package}.util.domain.PageData;
-import ${package}.util.domain.Assist;
+import java.util.Map;
+	
+import ${assistUrl}.PageData;
+import ${assistUrl}.Assist;
 import org.apache.ibatis.annotations.Param;
 #if($primaryKey.attrType == 'BigDecimal')
 import java.math.BigDecimal;
@@ -59,7 +60,8 @@ public interface ${className}Mapper
     * @param assist
     */
     public int deleteObjCommon(Assist assist);
-    
+  
+#if($isHasPageOp==true)   
     /**
     * 	默认查询所有
     */
@@ -70,6 +72,7 @@ public interface ${className}Mapper
 	*  默认查询所有记录数
 	*/
 	public int getAllCountByMapCondition(Map<String, Object> map);
+#end
     
 #if($pkNum==1)
 	/**

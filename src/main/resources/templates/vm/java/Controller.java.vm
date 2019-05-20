@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
-import ${package}.util.domain.Assist;
-import ${package}.util.domain.PageData;
+import ${assistUrl}.Assist;
+import ${assistUrl}.PageData;
 #if($primaryKey.attrType == 'BigDecimal')
 import java.math.BigDecimal;
 #end

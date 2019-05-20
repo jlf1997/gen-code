@@ -3,12 +3,15 @@ package ${package}.service;
 import ${package}.domain.${className};
 import java.util.List;
 import java.util.Map;
-import ${package}.util.domain.PageData;
-import ${package}.util.domain.Assist;
+import ${assistUrl}.PageData;
+import ${assistUrl}.Assist;
 #if($primaryKey.attrType == 'BigDecimal')
 import java.math.BigDecimal;
 #end
+#if($isHasPageOp==true)
 import com.readboy.ssm.po.PageOption;
+#end
+
 
 /**
  * ${tableComment} 服务层
@@ -63,6 +66,7 @@ public interface I${className}Service
 	 */
      public int deleteObjCommon(Assist assist);
      
+#if($isHasPageOp==true)     
      
    	 /**
 	    *  通用分页查询获取总数
@@ -78,6 +82,7 @@ public interface I${className}Service
 	  */
      public List<Map<String,Object>> getListByMapCondition(Map<String, Object> map,PageOption page,String functionName);
      
+#end
      
 #if($pkNum==1)
 	/**

@@ -9,10 +9,12 @@ import ${package}.dao.${className}Mapper;
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
 import org.springframework.util.Assert;
-import ${package}.util.domain.PageData;
-import ${package}.util.domain.Assist;
+import ${assistUrl}.PageData;
+import ${assistUrl}.Assist;
 
+#if($isHasPageOp==true)
 import com.readboy.ssm.po.PageOption;
+#end
 
 #if($primaryKey.attrType == 'BigDecimal')
 import java.math.BigDecimal;
@@ -88,7 +90,7 @@ public class ${className}ServiceImpl implements I${className}Service
      public int deleteObjCommon(Assist assist){
      	return ${classname}Mapper.deleteObjCommon(assist);
      }
-    
+#if($isHasPageOp==true)     
  	@Override
 	public int getCountByMapCondition(Map<String, Object> map, String functionName) {
 		if(map==null) {
@@ -128,6 +130,7 @@ public class ${className}ServiceImpl implements I${className}Service
 		}
 		return ${classname}Mapper.getAllCountByMapCondition(map);
 	} 
+#end
     
 #if($pkNum==1)
 	/**

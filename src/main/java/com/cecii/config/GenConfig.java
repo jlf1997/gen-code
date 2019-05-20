@@ -21,6 +21,10 @@ public class GenConfig
     public static String tablePrefix;
     
     public static String classPrefix = "";
+    
+    public static String assistUrl = "";
+    
+    public static boolean hasPageOp = false;
 
     public static String getAuthor()
     {
@@ -70,6 +74,24 @@ public class GenConfig
 
 	public static void setClassPrefix(String classPrefix) {
 		GenConfig.classPrefix = classPrefix;
+	}
+	
+	
+
+	public static String getAssistUrl() {
+		return assistUrl;
+	}
+
+	public static void setAssistUrl(String assistUrl) {
+		GenConfig.assistUrl = assistUrl;
+	}
+
+	public static boolean isHasPageOp() {
+		return hasPageOp;
+	}
+
+	public static void setHasPageOp(boolean hasPageOp) {
+		GenConfig.hasPageOp = hasPageOp;
 	}
 
 	@Override

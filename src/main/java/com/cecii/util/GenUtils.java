@@ -70,6 +70,8 @@ public class GenUtils
         velocityContext.put("package", packageName);
         velocityContext.put("author", GenConfig.getAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
+        velocityContext.put("assistUrl", GenConfig.getAssistUrl());
+        velocityContext.put("isHasPageOp", GenConfig.isHasPageOp());
         return velocityContext;
     }
 

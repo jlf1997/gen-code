@@ -4,9 +4,16 @@ spring:
   application:
     name: iot-api-smt-device
   datasource: 
-      url: jdbc:mysql://218.77.105.245:33069/bank_app?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-      username: bank_user
-      password: 654321 
+#      url: jdbc:mysql://175.6.112.47:3306/bank_pm?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull 
+#      username: test_user
+#      password: bankpm123456 
+      #jdbc:mysql://218.77.105.245:33069/bank_app?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+      #username: bank_user
+      #password: 654321 
+      url: jdbc:mysql://175.6.73.138:3406/iot_smt_collector?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull 
+      username: root
+      password: root 
+     
   cloud:
     service-registry:
       auto-registration:
